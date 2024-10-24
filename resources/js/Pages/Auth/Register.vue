@@ -1,113 +1,93 @@
 <script setup>
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
 
-const form = useForm({
-    name: '',
+import BaseTextFieldComponent from '@/Components/UI/BaseTextFieldComponent.vue';
+import BaseButtonComponent from '@/Components/UI/BaseButtonComponent.vue';
+import { ref } from 'vue';
+const fields = ref({
+    firstName: '',
+    middleName: '',
+    lastName: '',
     email: '',
+    phone: '',
     password: '',
-    password_confirmation: '',
+    confirmPassword: '',
 });
-
-const submit = () => {
-    form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
-    });
-};
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Register" />
+<v-card variant="flat">
+    <v-card-text>
+        <v-row>
+            <v-col cols="12" md="4">
+                <BaseTextFieldComponent label="First name*" v-model.trim="fields['firstName']" />
+<!--                <ErrorMessage v-if="errors.firstName" :message="errors.firstName" />-->
+            </v-col>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="name" value="Name" />
+            <v-col cols="12" md="4">
+                <BaseTextFieldComponent label="Middle name" v-model.trim="fields['middleName']" />
+            </v-col>
 
-                <TextInput
-                    id="name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
+            <v-col cols="12" md="4">
+                <BaseTextFieldComponent label="Last name*" v-model.trim="fields['lastName']" />
+<!--                <ErrorMessage v-if="errors.lastName" :message="errors.lastName" />-->
+            </v-col>
+        </v-row>
 
-                <InputError class="mt-2" :message="form.errors.name" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
+        <v-row>
+            <v-col cols="12" md="6">
+                <BaseTextFieldComponent
+                    label="E-Mail*"
                     type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
+                    v-model.trim="fields['email']"
+                    prepend-inner-icon="mdi-email"
                 />
+<!--                <ErrorMessage v-if="errors.email" :message="errors.email" />-->
+            </v-col>
 
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
+            <v-col cols="12" md="6">
+                <BaseTextFieldComponent
+                    label="Phone"
+                    type="tel"
+                    v-model.trim="fields['phone']"
+                    prepend-inner-icon="mdi-phone"
+                />
+            </v-col>
+        </v-row>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
-                <TextInput
-                    id="password"
+        <v-row>
+            <v-col cols="12" md="6">
+                <BaseTextFieldComponent
+                    label="Password*"
                     type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
+                    v-model="fields['password']"
+                    prepend-inner-icon="mdi-lock"
                 />
+<!--                <ErrorMessage v-if="errors.password" :message="errors.password" />-->
+            </v-col>
 
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel
-                    for="password_confirmation"
-                    value="Confirm Password"
-                />
-
-                <TextInput
-                    id="password_confirmation"
+            <v-col cols="12" md="6">
+                <BaseTextFieldComponent
+                    label="Confirm password*"
                     type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
+                    v-model="fields['confirmPassword']"
+                    prepend-inner-icon="mdi-lock"
                 />
+<!--                <ErrorMessage v-if="errors.confirmPassword" :message="errors.confirmPassword" />-->
+            </v-col>
+        </v-row>
+        <small class="text-caption text-medium-emphasis">*indicates required field</small>
+    </v-card-text>
 
-                <InputError
-                    class="mt-2"
-                    :message="form.errors.password_confirmation"
-                />
-            </div>
-
-            <div class="mt-4 flex items-center justify-end">
-                <Link
-                    :href="route('login')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                >
-                    Already registered?
-                </Link>
-
-                <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Register
-                </PrimaryButton>
-            </div>
-        </form>
-    </GuestLayout>
+    <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn variant="outlined" color="blue">
+            Signup
+            <v-icon>mdi-chevron-right</v-icon>
+        </v-btn>
+    </v-card-actions>
+</v-card>
 </template>
+
+<style scoped>
+
+</style>
